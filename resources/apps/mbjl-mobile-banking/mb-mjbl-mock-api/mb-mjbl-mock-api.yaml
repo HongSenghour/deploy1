@@ -1,0 +1,149 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mjbl-mobile-banking
+  name: mb-mjbl-mock-api
+spec:
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: mb-mjbl-mock-api
+  template:
+    metadata:
+      labels:
+        app: mb-mjbl-mock-api
+    spec:
+      #nodeName: c1ukubwkr03
+      containers:
+        - name: mb-mjbl-mock-api
+          image: harbor.sathapana.com.kh/uat/mb-mjbl-mock-api:50268
+          imagePullPolicy: IfNotPresent
+          # livenessProbe:
+          #   httpGet:
+          #     path: /actuator/health/liveness
+          #     port: 8080
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 5
+          #   timeoutSeconds: 5
+          #   successThreshold: 1
+          #   failureThreshold: 3
+          # readinessProbe:
+          #   httpGet:
+          #     path: /actuator/health/readiness
+          #     port: 8080
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 5
+          #   timeoutSeconds: 5
+          #   successThreshold: 1
+          #   failureThreshold: 3
+
+          ports:
+            - containerPort: 8080
+              name: app-port
+          resources:
+            requests:
+              memory: "256Mi"
+              #cpu: "1000m"
+            limits:
+              memory: "512Mi"
+              #cpu: "2000m"
+
+          env:
+            # Database Configuration START
+            - name: "DB_MB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_HOST
+            - name: "DB_MB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_PORT
+            - name: "DB_MB_DATABASE_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_DATABASE_NAME
+            - name: "DB_MB_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_USERNAME
+            - name: "DB_MB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_PASSWORD
+            # Database Configuration END
+
+            # Configuration Local Cluster START
+            - name: "MS_CENTRALIZED_LOG_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_CENTRALIZED_LOG_BASE_URL
+            # Configuration Local Cluster END
+
+            # Configuration Service START
+            - name: "MS_MJBL_IN_HOUSE_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-service-credentials
+                  key: MS_MJBL_IN_HOUSE_API_KEY
+            # Configuration Service END
+
+
+          securityContext:
+            allowPrivilegeEscalation: false
+          
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - mb-mjbl-mock-api
+                topologyKey: "kubernetes.io/hostname"
+              weight: 1
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-mobile-banking
+  name: mb-mjbl-mock-api
+spec:
+  type: NodePort
+  selector:
+    app: mb-mjbl-mock-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: app-port
+      nodePort: 32024
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-mobile-banking
+  name: mb-mjbl-mock-api-local
+spec:
+  type: ClusterIP
+  selector:
+    app: mb-mjbl-mock-api
+  ports:
+    - port: 9024
+      targetPort: app-port
