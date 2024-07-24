@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-identification
-          image: harbor.sathapana.com.kh/uat/mb-mjbl-identification:50282
+          image: 10.92.0.87:1521/uat/mb-mjbl-identification:50282
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -134,23 +134,6 @@ spec:
                     - mb-mjbl-identification
                 topologyKey: "kubernetes.io/hostname"
               weight: 1
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-mobile-banking
-  name: mb-mjbl-identification
-spec:
-  type: NodePort
-  selector:
-    app: mb-mjbl-identification
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: app-port
-      nodePort: 32005
 
 ---
 
