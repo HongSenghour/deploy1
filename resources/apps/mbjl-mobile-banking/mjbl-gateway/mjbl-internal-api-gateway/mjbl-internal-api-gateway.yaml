@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: mjbl-internal-api-gateway
-          image: harbor.sathapana.com.kh/uat/mjbl-api-gateway-configuration-service:49859
+          image: 10.92.0.87:1521/uat/mb-mjbl-identification:50282
           imagePullPolicy: IfNotPresent
 
           livenessProbe:
