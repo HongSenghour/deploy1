@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: mjbl-mobile-banking
   name: mb-mjbl-identification
 spec:
   replicas: 2
@@ -140,7 +140,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: mjbl-mobile-banking
   name: mb-mjbl-identification-local
 spec:
   type: ClusterIP
@@ -155,7 +155,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: mjbl-mobile-banking
   name: mb-mjbl-identification
 spec:
   type: NodePort
