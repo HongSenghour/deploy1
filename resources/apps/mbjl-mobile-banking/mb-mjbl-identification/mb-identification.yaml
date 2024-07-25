@@ -4,7 +4,7 @@ metadata:
   namespace: mjbl-mobile-banking
   name: mb-mjbl-identification
 spec:
-  replicas: 1
+  replicas: 2
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
@@ -122,18 +122,18 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
           
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - mb-mjbl-identification
-                topologyKey: "kubernetes.io/hostname"
-              weight: 1
+      # affinity:
+      #   podAntiAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #       - podAffinityTerm:
+      #           labelSelector:
+      #             matchExpressions:
+      #             - key: app
+      #               operator: In
+      #               values:
+      #               - mb-mjbl-identification
+      #           topologyKey: "kubernetes.io/hostname"
+      #         weight: 1
 
 ---
 
