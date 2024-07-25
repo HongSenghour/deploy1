@@ -4,7 +4,7 @@ metadata:
   namespace: mjbl-mobile-banking
   name: mb-mjbl-identification
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
