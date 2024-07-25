@@ -4,7 +4,7 @@ metadata:
   namespace: mjbl-internal-microservice
   name: mjbl-internal-api-gateway
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
