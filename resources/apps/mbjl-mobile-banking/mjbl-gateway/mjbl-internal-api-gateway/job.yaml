@@ -1,20 +1,20 @@
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: refresh-config-job
-  namespace: mjbl-internal-microservice
-spec:
-  template:
-    spec:
-      containers:
-      - name: refresh-config
-        image: 10.92.0.87:1521/uat/kubectl:july-24-2024 # Use a lightweight image with kubectl installed
-        command: ["/bin/sh", "-c", "chmod +x /scripts/refresh.sh && /scripts/refresh.sh"]
-        volumeMounts:
-        - name: script-volume
-          mountPath: /scripts
-      restartPolicy: OnFailure
-      volumes:
-      - name: script-volume
-        configMap:
-          name: refresh-script
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: refresh-config-job
+#   namespace: mjbl-internal-microservice
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: refresh-config
+#         image: 10.92.0.87:1521/uat/kubectl:july-24-2024 # Use a lightweight image with kubectl installed
+#         command: ["/bin/sh", "-c", "chmod +x /scripts/refresh.sh && /scripts/refresh.sh"]
+#         volumeMounts:
+#         - name: script-volume
+#           mountPath: /scripts
+#       restartPolicy: OnFailure
+#       volumes:
+#       - name: script-volume
+#         configMap:
+#           name: refresh-script
