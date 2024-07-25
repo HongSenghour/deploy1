@@ -122,18 +122,19 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
           
-      # affinity:
-      #   podAntiAffinity:
-      #     preferredDuringSchedulingIgnoredDuringExecution:
-      #       - podAffinityTerm:
-      #           labelSelector:
-      #             matchExpressions:
-      #             - key: app
-      #               operator: In
-      #               values:
-      #               - mb-mjbl-identification
-      #           topologyKey: "kubernetes.io/hostname"
-      #         weight: 1
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - mb-mjbl-identification
+                topologyKey: "kubernetes.io/hostname"
+              weight: 1
+              
 
 ---
 
