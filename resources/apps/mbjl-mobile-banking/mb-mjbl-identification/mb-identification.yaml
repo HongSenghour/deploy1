@@ -155,12 +155,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: mjbl-internal-microservice
-  name: mjbl-internal-api-gateway
+  namespace: mjbl-mobile-banking
+  name: mb-mjbl-identification
 spec:
   type: NodePort
   selector:
-    app: mjbl-internal-api-gateway
+    app: mb-mjbl-identification
   ports:
     - protocol: TCP
       port: 8080
