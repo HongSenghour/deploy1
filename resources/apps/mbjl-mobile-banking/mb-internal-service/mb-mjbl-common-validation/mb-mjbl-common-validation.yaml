@@ -117,11 +117,11 @@ spec:
             # Configuration Local Cluster END
 
             # Configuration Service START
-            - name: "ACCOUNT_VALIDATION_API_KEY"
+            - name: "MS_MJBL_IN_HOUSE_API_KEY"
               valueFrom:
                 secretKeyRef:
                   name: mjbl-mb-service-credentials
-                  key: ACCOUNT_VALIDATION_API_KEY
+                  key: MS_MJBL_IN_HOUSE_API_KEY
             # Configuration Service END
 
           securityContext:
