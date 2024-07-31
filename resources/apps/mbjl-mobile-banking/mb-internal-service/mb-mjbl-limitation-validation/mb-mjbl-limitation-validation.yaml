@@ -55,13 +55,33 @@ spec:
               #cpu: "2000m"
 
           env:
-            # Configuration Service START
-            - name: "HASH_SECRET_KEY"
+            # Database Configuration START
+            - name: "DB_MB_HOST"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-mb-service-credentials
-                  key: HASH_SECRET_KEY
-            # Configuration Service END
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_HOST
+            - name: "DB_MB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_PORT
+            - name: "DB_MB_DATABASE_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_DATABASE_NAME
+            - name: "DB_MB_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_USERNAME
+            - name: "DB_MB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_MB_PASSWORD
+            # Database Configuration END
 
           securityContext:
             allowPrivilegeEscalation: false
