@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: mjbl-api-gateway
-  name: mjbl-api-gateway-configuration-service
+  name: mjbl-external-api-gateway
 spec:
   replicas: 1
   minReadySeconds: 30
@@ -13,15 +13,15 @@ spec:
       maxSurge: 25%
   selector:
     matchLabels:
-      app: mjbl-api-gateway-configuration-service
+      app: mjbl-external-api-gateway
   template:
     metadata:
       labels:
-        app: mjbl-api-gateway-configuration-service
+        app: mjbl-external-api-gateway
     spec:
       containers:
-        - name: mjbl-api-gateway-configuration-service
-          image: 10.92.0.87:1521/uat/mjbl-api-gateway-configuration-service:50446
+        - name: mjbl-external-api-gateway
+          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:50683
           imagePullPolicy: IfNotPresent
 
           livenessProbe:
@@ -51,33 +51,6 @@ spec:
               memory: "256Mi"
             limits:
               memory: "512Mi"
-          env:
-            - name: "DB_MB_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
-                  key: DB_MB_HOST
-            - name: "DB_MB_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
-                  key: DB_MB_PORT
-            - name: "DB_MB_DATABASE_NAME"
-              valueFrom:
-                secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
-                  key: DB_MB_DATABASE_NAME
-            - name: "DB_MB_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
-                  key: DB_MB_USERNAME
-            - name: "DB_MB_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
-                  key: DB_MB_PASSWORD
-
           securityContext:
             allowPrivilegeEscalation: false
 
@@ -90,7 +63,7 @@ spec:
                     - key: app
                       operator: In
                       values:
-                        - mjbl-api-gateway-configuration-service
+                        - mjbl-external-api-gateway
                 topologyKey: "kubernetes.io/hostname"
               weight: 1
 
@@ -100,28 +73,13 @@ kind: Service
 apiVersion: v1
 metadata:
   namespace: mjbl-api-gateway
-  name: mjbl-api-gateway-configuration-service
+  name: mjbl-external-api-gateway
 spec:
   type: NodePort
   selector:
-    app: mjbl-api-gateway-configuration-service
+    app: mjbl-external-api-gateway
   ports:
     - protocol: TCP
       port: 8080
       targetPort: app-port
-      nodePort: 32002
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-api-gateway
-  name: mjbl-api-gateway-configuration-service-local
-spec:
-  type: ClusterIP
-  selector:
-    app: mjbl-api-gateway-configuration-service
-  ports:
-    - port: 9002
-      targetPort: app-port
+      nodePort: 30001
