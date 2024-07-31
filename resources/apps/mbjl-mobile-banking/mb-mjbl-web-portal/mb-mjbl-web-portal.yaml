@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-web-portal
-          image: harbor.sathapana.com.kh/uat/mb-mjbl-web-portal:50093
+          image: harbor.sathapana.com.kh/uat/mb-mjbl-web-portal:50690
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -111,25 +111,6 @@ spec:
                     - mb-mjbl-web-portal
                 topologyKey: "kubernetes.io/hostname"
               weight: 1
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-mobile-banking
-  name: mb-mjbl-web-portal
-spec:
-  type: NodePort
-  selector:
-    app: mb-mjbl-web-portal
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: app-port
-      nodePort: 32004
-
----
 
 kind: Service
 apiVersion: v1
