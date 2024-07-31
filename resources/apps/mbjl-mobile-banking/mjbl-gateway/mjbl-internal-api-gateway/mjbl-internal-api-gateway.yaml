@@ -109,19 +109,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: app-port
-      nodePort: 32001
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-api-gateway
-  name: mjbl-internal-api-gateway-local
-spec:
-  type: ClusterIP
-  selector:
-    app: mjbl-internal-api-gateway
-  ports:
-    - port: 9001
-      targetPort: app-port
+      nodePort: 30001
