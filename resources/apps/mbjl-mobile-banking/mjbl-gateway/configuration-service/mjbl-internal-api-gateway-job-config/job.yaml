@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: refresh-config-job
-  namespace: mjbl-internal-microservice
+  namespace: mjbl-api-gateway
 spec:
   template:
     spec:

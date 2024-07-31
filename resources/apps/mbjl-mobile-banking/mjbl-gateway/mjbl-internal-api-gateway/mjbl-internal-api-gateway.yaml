@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: mjbl-internal-microservice
+  namespace: mjbl-api-gateway
   name: mjbl-internal-api-gateway
 spec:
   replicas: 1
@@ -55,27 +55,27 @@ spec:
             - name: "DB_MB_HOST"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-internal-microservice-db-credentials
+                  name: mjbl-api-gateway-db-credentials
                   key: DB_MB_HOST
             - name: "DB_MB_PORT"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-internal-microservice-db-credentials
+                  name: mjbl-api-gateway-db-credentials
                   key: DB_MB_PORT
             - name: "DB_MB_DATABASE_NAME"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-internal-microservice-db-credentials
+                  name: mjbl-api-gateway-db-credentials
                   key: DB_MB_DATABASE_NAME
             - name: "DB_MB_USERNAME"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-internal-microservice-db-credentials
+                  name: mjbl-api-gateway-db-credentials
                   key: DB_MB_USERNAME
             - name: "DB_MB_PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-internal-microservice-db-credentials
+                  name: mjbl-api-gateway-db-credentials
                   key: DB_MB_PASSWORD
 
           securityContext:
@@ -99,7 +99,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: mjbl-internal-microservice
+  namespace: mjbl-api-gateway
   name: mjbl-internal-api-gateway
 spec:
   type: NodePort
@@ -116,7 +116,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: mjbl-internal-microservice
+  namespace: mjbl-api-gateway
   name: mjbl-internal-api-gateway-local
 spec:
   type: ClusterIP
