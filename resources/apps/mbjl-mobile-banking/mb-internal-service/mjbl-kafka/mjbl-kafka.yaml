@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mjbl-kafka
+spec:
+  serviceName: mjbl-kafka
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mjbl-kafka
+  template:
+    metadata:
+      labels:
+        app: mjbl-kafka
+    spec:
+      containers:
+      - name: mjbl-kafka
+        image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
+        env:
+        - name: KAFKA_BROKER_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
+        - name: KAFKA_KRAFT_MODE_ENABLED
+          value: "true"
+        - name: KAFKA_LISTENERS
+          value: "PLAINTEXT://:9092"
+        ports:
+        - containerPort: 9092
+          name: app-port
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-mobile-banking
+  name: mjbl-kafka-local
+spec:
+  type: ClusterIP
+  selector:
+    app: mjbl-kafka
+  ports:
+    - port: 9024
+      targetPort: app-port
