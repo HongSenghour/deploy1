@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: mjbl-external-api-gateway
-          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:50727
+          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:50801
           imagePullPolicy: IfNotPresent
 
           livenessProbe:
@@ -53,7 +53,27 @@ spec:
               memory: "512Mi"
           securityContext:
             allowPrivilegeEscalation: false
-
+          env:
+            - name: "INTERNAL_API_GATEWAY_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-db-credentials
+                  key: INTERNAL_API_GATEWAY_BASE_URL
+            - name: "KAKFA_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-db-credentials
+                  key: KAKFA_HOST
+            - name: "REDIS_HOST_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-db-credentials
+                  key: REDIS_HOST_NAME
+            - name: "REDIS_PORT_NUMBER"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-db-credentials
+                  key: REDIS_PORT_NUMBER
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
