@@ -57,22 +57,22 @@ spec:
             - name: "INTERNAL_API_GATEWAY_BASE_URL"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
+                  name: mjbl-api-gateway-service-credentials
                   key: INTERNAL_API_GATEWAY_BASE_URL
             - name: "KAKFA_HOST"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
+                  name: mjbl-api-gateway-service-credentials
                   key: KAKFA_HOST
             - name: "REDIS_HOST_NAME"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
+                  name: mjbl-api-gateway-service-credentials
                   key: REDIS_HOST_NAME
             - name: "REDIS_PORT_NUMBER"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-api-gateway-db-credentials
+                  name: mjbl-api-gateway-service-credentials
                   key: REDIS_PORT_NUMBER
       affinity:
         podAntiAffinity:
