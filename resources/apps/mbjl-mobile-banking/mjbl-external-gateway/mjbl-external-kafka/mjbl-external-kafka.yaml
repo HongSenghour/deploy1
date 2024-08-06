@@ -66,9 +66,9 @@ spec:
     app: mjbl-external-kafka
   ports:
     - protocol: TCP
-      port: 9026
+      port: 9092
       targetPort: app-port
-      nodePort: 9092
+      nodePort: 9026
 
 ---
 
@@ -82,6 +82,6 @@ spec:
   selector:
     app: mjbl-external-kafka
   ports:
-    - port: 9026
+    - port: 9092
       targetPort: app-port
-      nodePort: 9092
+      nodePort: 9026
