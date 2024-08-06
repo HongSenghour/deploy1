@@ -26,8 +26,27 @@ spec:
         - containerPort: 9092
           name: app-port
         volumeMounts:
-        - name: mjbl-external-kafka
-          mountPath: /var/lib/kafka/data
+        - name: kafka-data
+          mountPath: /var/lib/mjbl-internal-kafka/data
+        - name: kafka-metadata
+          mountPath: /var/lib/mjbl-internal-kafka/metadata
+        env:
+        - name: KAFKA_CFG_NODE_ID
+          value: "0"
+        - name: KAFKA_CFG_PROCESS_ROLES
+          value: "controller,broker"
+        - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+          value: "0@kafka:9093"
+        - name: KAFKA_CFG_LISTENERS
+          value: "PLAINTEXT://:9092,CONTROLLER://:9093"
+        - name: KAFKA_CFG_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://:9092"
+        - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+          value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+        - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+          value: "CONTROLLER"
+        - name: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
+          value: "PLAINTEXT"
         resources:
           requests:
             memory: "2Gi"
