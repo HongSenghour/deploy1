@@ -27,8 +27,8 @@ spec:
         - containerPort: 9092
           name: app-port
         volumeMounts:
-        - name: mjbl-external-kafka-data
-          mountPath: /var/lib/mjbl-external-kafka/data
+        - name: kafka-data
+          mountPath: /var/lib/kafka/data
         - name: kafka-config
           mountPath: /etc/kafka
           subPath: kafka.properties
@@ -46,7 +46,7 @@ spec:
         securityContext:
             allowPrivilegeEscalation: false
       volumes:
-      - name: mjbl-external-kafka-data
+      - name: kafka-data
         emptyDir: {}
       affinity:
         podAntiAffinity:
