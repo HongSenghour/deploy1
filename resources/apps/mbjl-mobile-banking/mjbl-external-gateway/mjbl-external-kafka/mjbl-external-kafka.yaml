@@ -31,8 +31,12 @@ spec:
         - name: kafka-metadata
           mountPath: /var/lib/mjbl-internal-kafka/metadata
         env:
+        - name: KAFKA_ENABLE_KRAFT
+          value: "true"
         - name: KAFKA_CFG_NODE_ID
           value: "0"
+        - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+          value: "true"
         - name: KAFKA_CFG_PROCESS_ROLES
           value: "controller,broker"
         - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
