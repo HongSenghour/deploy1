@@ -24,35 +24,37 @@ spec:
         image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
         ports:
         - containerPort: 9092
-          name: app-port
         - containerPort: 9093
-          name: controller-port
         volumeMounts:
         - name: mjbl-external-kafka-data
           mountPath: /var/lib/mjbl-internal-kafka/data
         - name: mjbl-external-kafka-metadata
           mountPath: /var/lib/mjbl-internal-kafka/metadata
         env:
-          - name: KAFKA_KRAFT_MODE
-            value: "true"
-          - name: KAFKA_KRAFT_CLUSTER_ID 
-            value: "0"
-          - name: KAFKA_LISTENER_NAME
-            value: "PLAINTEXT"
-          - name: KAFKA_LISTENER_PORT
-            value: "9092"
-          - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-            value: "PLAINTEXT:PLAINTEXT"
-          - name: KAFKA_LISTENER_NAME
-            value: "PLAINTEXT://localhost:9092"
-          - name: KAFKA_ZOOKEEPER_METADATA_MIGRATION_ENABLE
-            value: "true"
-          - name: KAFKA_BROKER_ID
-            value: "1"
-          - name: KAFKA_LOG_DIRS
-            value: "/var/lib/kafka/data"
-          - name: KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE
-            value: "false"
+        - name: KAFKA_NODE_ID
+          value: "1"
+        - name: KAFKA_PROCESS_ROLES
+          value: "broker,controller"
+        - name: KAFKA_LISTENERS
+          value: "PLAINTEXT://:9092,CONTROLLER://:9093"
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://localhost:9092"
+        - name: KAFKA_CONTROLLER_LISTENER_NAMES
+          value: "CONTROLLER"
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+        - name: KAFKA_CONTROLLER_QUORUM_VOTERS
+          value: "1@localhost:9093"
+        - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+          value: "1"
+        - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+          value: "1"
+        - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+          value: "1"
+        - name: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+          value: "0"
+        - name: KAFKA_NUM_PARTITIONS
+          value: "3"
         resources:
           requests:
             memory: "2Gi"
