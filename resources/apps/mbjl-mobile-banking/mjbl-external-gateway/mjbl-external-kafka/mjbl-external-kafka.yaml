@@ -28,8 +28,6 @@ spec:
         volumeMounts:
         - name: kafka-data
           mountPath: /var/lib/mjbl-internal-kafka/data
-        - name: kafka-metadata
-          mountPath: /var/lib/mjbl-internal-kafka/metadata
         env:
         - name: KAFKA_CFG_NODE_ID
           value: "0"
