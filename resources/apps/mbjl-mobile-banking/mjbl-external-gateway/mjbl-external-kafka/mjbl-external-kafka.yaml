@@ -29,7 +29,7 @@ spec:
         volumeMounts:
         - name: mjbl-external-kafka-data
           mountPath: /var/lib/mjbl-external-kafka/data
-        - name: mjbl-external-kafka-configmap
+        - name: kafka-config
           mountPath: /etc/kafka
           subPath: kafka.properties
         command:
