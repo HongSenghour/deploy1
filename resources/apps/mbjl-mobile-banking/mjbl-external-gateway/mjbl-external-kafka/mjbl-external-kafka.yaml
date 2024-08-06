@@ -23,7 +23,7 @@ spec:
         - name: mjbl-external-kafka
           image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
           ports:
-            - containerPort: 8080
+            - containerPort: 9092
               name: app-port
             - containerPort: 9093
           volumeMounts:
