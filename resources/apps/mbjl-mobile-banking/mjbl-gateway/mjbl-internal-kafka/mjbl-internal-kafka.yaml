@@ -1,11 +1,10 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: mjbl-api-gateway
   name: mjbl-internal-kafka
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
@@ -21,27 +20,56 @@ spec:
         app: mjbl-internal-kafka
     spec:
       containers:
-      - name: mjbl-internal-kafka
-        image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
-        ports:
-        - containerPort: 9092
-          name: app-port
-        volumeMounts:
-        - name: mjbl-internal-kafka-data
-          mountPath: /var/lib/mjbl-internal-kafka/data
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1"
-          limits:
-            memory: "4Gi"
-            cpu: "2"
-        securityContext:
-            allowPrivilegeEscalation: false
+        - name: mjbl-internal-kafka
+          image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
+          ports:
+            - containerPort: 9092
+              name: app-port
+            - containerPort: 9093
+          volumeMounts:
+            - name: mjbl-internal-kafka-data
+              mountPath: /var/lib/mjbl-internal-kafka/data
+            - name: mjbl-internal-kafka-metadata
+              mountPath: /var/lib/mjbl-internal-kafka/metadata
+          env:
+            - name: KAFKA_NODE_ID
+              value: "1"
+            - name: KAFKA_PROCESS_ROLES
+              value: "broker,controller"
+            - name: KAFKA_LISTENERS
+              value: "PLAINTEXT://:9092,CONTROLLER://:9093"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "PLAINTEXT://10.93.0.24:32099"
+            - name: KAFKA_CONTROLLER_LISTENER_NAMES
+              value: "CONTROLLER"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+            - name: KAFKA_CONTROLLER_QUORUM_VOTERS
+              value: "1@localhost:9093"
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+              value: "1"
+            - name: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+              value: "0"
+            - name: KAFKA_NUM_PARTITIONS
+              value: "3"
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "4Gi"
+              cpu: "2"
+          securityContext:
+              allowPrivilegeEscalation: false
       volumes:
-      - name: mjbl-internal-kafka-data
-        emptyDir: {}
-
+        - name: mjbl-internal-kafka-data
+          emptyDir: {}
+        - name: mjbl-internal-kafka-metadata
+          emptyDir: {}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
