@@ -20,17 +20,17 @@ spec:
         ports:
         - containerPort: 9026
         env:
-        - name: mjbl-external-kafka_KRAFT_MODE
+        - name: KAFKA_KRAFT_MODE
           value: "true"
-        - name: mjbl-external-kafka_LISTENERS
+        - name: KAFKA_LISTENERS
           value: "PLAINTEXT://0.0.0.0:9026"
-        - name: mjbl-external-kafka_ADVERTISED_LISTENERS
+        - name: KAFKA_ADVERTISED_LISTENERS
           value: "PLAINTEXT://mjbl-external-kafka:9026"
-        - name: mjbl-external-kafka_LISTENER_SECURITY_PROTOCOL_MAP
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: "PLAINTEXT:PLAINTEXT"
-        - name: mjbl-external-kafka_LOG_DIRS
+        - name: KAFKA_LOG_DIRS
           value: "/var/lib/mjbl-external-kafka/data"
-        - name: mjbl-external-kafka_KRAFT_MODE_BOOTSTRAP_SERVERS
+        - name: KAFKA_KRAFT_MODE_BOOTSTRAP_SERVERS
           value: "mjbl-external-kafka:9026"
         volumeMounts:
         - name: mjbl-external-kafka-data
