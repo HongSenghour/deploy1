@@ -57,7 +57,7 @@ spec:
         securityContext:
             allowPrivilegeEscalation: false
       volumes:
-      - name: mjbl-external-kafka
+      - name: kafka-data
         emptyDir: {}
       affinity:
         podAntiAffinity:
