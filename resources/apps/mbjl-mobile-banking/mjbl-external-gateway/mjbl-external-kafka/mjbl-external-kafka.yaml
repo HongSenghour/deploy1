@@ -1,188 +1,109 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: kafka
-  labels:
-    app: kafka
+  namespace: mjbl-api-gateway
+  name: mjbl-external-kafka
 spec:
-  serviceName: "kafka"
   replicas: 1
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
   selector:
     matchLabels:
-      app: kafka
+      app: mjbl-external-kafka
   template:
     metadata:
       labels:
-        app: kafka
+        app: mjbl-external-kafka
     spec:
       containers:
-        - name: kafka
-          image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
-          ports:
-            - containerPort: 9092
-              name: kafka
-          volumeMounts:
-            - name: kafka-data
-              mountPath: /var/lib/kafka/data
-          env:
-            - name: KAFKA_KRAFT_MODE
-              value: "true"
-            - name: KAFKA_LISTENER_NAME
-              value: "PLAINTEXT"
-            - name: KAFKA_LISTENER_PORT
-              value: "9092"
-            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-              value: "PLAINTEXT:PLAINTEXT"
-            - name: KAFKA_LISTENER_NAME
-              value: "PLAINTEXT://localhost:9092"
-            - name: KAFKA_BROKER_ID
-              value: "1"
-            - name: KAFKA_LOG_DIRS
-              value: "/var/lib/kafka/data"
-            - name: KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE
-              value: "false"
-          args:
-            - sh
-            - -c
-            - |
-              echo "Starting Kafka in KRaft mode..."
-              kafka-server-start /etc/kafka/server.properties
+      - name: mjbl-internal-kafka
+        image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
+        ports:
+        - containerPort: 9092
+          name: app-port
+        - containerPort: 9093
+          name: controller-port
+        volumeMounts:
+        - name: mjbl-external-kafka-data
+          mountPath: /var/lib/mjbl-internal-kafka/data
+        - name: mjbl-external-kafka-metadata
+          mountPath: /var/lib/mjbl-internal-kafka/metadata
+        env:
+          - name: KAFKA_KRAFT_MODE
+            value: "true"
+          - name: KAFKA_LISTENER_NAME
+            value: "PLAINTEXT"
+          - name: KAFKA_LISTENER_PORT
+            value: "9092"
+          - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+            value: "PLAINTEXT:PLAINTEXT"
+          - name: KAFKA_LISTENER_NAME
+            value: "PLAINTEXT://localhost:9092"
+          - name: KAFKA_BROKER_ID
+            value: "1"
+          - name: KAFKA_LOG_DIRS
+            value: "/var/lib/kafka/data"
+          - name: KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE
+            value: "false"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        securityContext:
+            allowPrivilegeEscalation: false
       volumes:
-        - name: kafka-data
-          emptyDir: {}
+      - name: mjbl-external-kafka-data
+        emptyDir: {}
+      - name: mjbl-external-kafka-metadata
+        emptyDir: {}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - mjbl-external-kafka
+                topologyKey: "kubernetes.io/hostname"
+              weight: 1
 
 ---
-apiVersion: v1
+
 kind: Service
+apiVersion: v1
 metadata:
-  name: kafka
+  namespace: mjbl-api-gateway
+  name: mjbl-external-kafka
 spec:
-  ports:
-    - port: 9092
-      targetPort: kafka
+  type: NodePort
   selector:
-    app: kafka
+    app: mjbl-external-kafka
+  ports:
+    - protocol: TCP
+      port: 9092
+      targetPort: app-port
+      nodePort: 32099
 
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   namespace: mjbl-api-gateway
-#   name: mjbl-external-kafka
-# spec:
-#   replicas: 1
-#   minReadySeconds: 30
-#   strategy:
-#     type: RollingUpdate
-#     rollingUpdate:
-#       maxUnavailable: 25%
-#       maxSurge: 25%
-#   selector:
-#     matchLabels:
-#       app: mjbl-external-kafka
-#   template:
-#     metadata:
-#       labels:
-#         app: mjbl-external-kafka
-#     spec:
-#       containers:
-#       - name: mjbl-internal-kafka
-#         image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
-#         ports:
-#         - containerPort: 9092
-#           name: app-port
-#         - containerPort: 9093
-#           name: controller-port
-#         volumeMounts:
-#         - name: kafka-data
-#           mountPath: /var/lib/mjbl-internal-kafka/data
-#         - name: kafka-metadata
-#           mountPath: /var/lib/mjbl-internal-kafka/metadata
-#         env:
-#         - name: KAFKA_ENABLE_KRAFT
-#           value: "true"
-#         - name: KAFKA_NODE_ID
-#           value: "1"
-#         - name: KAFKA_PROCESS_ROLES
-#           value: "broker,controller"
-#         - name: KAFKA_LISTENERS
-#           value: "PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093"
-#         - name: KAFKA_ADVERTISED_LISTENERS
-#           value: "PLAINTEXT://localhost:9092"
-#         - name: KAFKA_CONTROLLER_LISTENER_NAMES
-#           value: "CONTROLLER"
-#         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
-#           value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
-#         - name: KAFKA_CONTROLLER_QUORUM_VOTERS
-#           value: "1@localhost:9093"
-#         - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
-#           value: "1"
-#         - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
-#           value: "1"
-#         - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
-#           value: "1"
-#         - name: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
-#           value: "0"
-#         - name: KAFKA_NUM_PARTITIONS
-#           value: "3"
-#         command:
-#           - sh
-#           - -c
-#           - "kafka-server-start.sh /etc/kafka/kafka.properties"
-#         resources:
-#           requests:
-#             memory: "2Gi"
-#             cpu: "1"
-#           limits:
-#             memory: "4Gi"
-#             cpu: "2"
-#         securityContext:
-#             allowPrivilegeEscalation: false
-#       volumes:
-#       - name: mjbl-external-kafka-data
-#         emptyDir: {}
-#       - name: mjbl-external-kafka-metadata
-#         emptyDir: {}
-#       affinity:
-#         podAntiAffinity:
-#           preferredDuringSchedulingIgnoredDuringExecution:
-#             - podAffinityTerm:
-#                 labelSelector:
-#                   matchExpressions:
-#                     - key: app
-#                       operator: In
-#                       values:
-#                         - mjbl-external-kafka
-#                 topologyKey: "kubernetes.io/hostname"
-#               weight: 1
+---
 
-# ---
-
-# kind: Service
-# apiVersion: v1
-# metadata:
-#   namespace: mjbl-api-gateway
-#   name: mjbl-external-kafka
-# spec:
-#   type: NodePort
-#   selector:
-#     app: mjbl-external-kafka
-#   ports:
-#     - protocol: TCP
-#       port: 9092
-#       targetPort: app-port
-#       nodePort: 32099
-
-# ---
-
-# kind: Service
-# apiVersion: v1
-# metadata:
-#   namespace: mjbl-api-gateway
-#   name: mjbl-external-kafka-local
-# spec:
-#   type: ClusterIP
-#   selector:
-#     app: mjbl-external-kafka
-#   ports:
-#     - port: 9026
-#       targetPort: app-port
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-external-kafka-local
+spec:
+  type: ClusterIP
+  selector:
+    app: mjbl-external-kafka
+  ports:
+    - port: 9026
+      targetPort: app-port
