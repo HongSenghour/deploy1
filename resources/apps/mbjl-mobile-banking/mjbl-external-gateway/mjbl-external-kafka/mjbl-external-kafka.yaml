@@ -1,10 +1,67 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mjbl-api-gateway
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mjbl-external-zookeeper
+  namespace: mjbl-api-gateway
+spec:
+  serviceName: "mjbl-external-zookeeper"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mjbl-external-zookeeper
+  template:
+    metadata:
+      labels:
+        app: mjbl-external-zookeeper
+    spec:
+      containers:
+      - name: mjbl-external-zookeeper
+        image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: "2181"
+        - name: ZOOKEEPER_TICK_TIME
+          value: "2000"
+        - name: ZOOKEEPER_SYNC_LIMIT
+          value: "2"
+        volumeMounts:
+        - name: mjbl-external-zookeeper-data
+          mountPath: /data
+        - name: mjbl-external-zookeeper-logs
+          mountPath: /datalog
+      volumes:
+      - name: mjbl-external-zookeeper-data
+        emptyDir: {}
+      - name: mjbl-external-zookeeper-logs
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mjbl-external-zookeeper
+  namespace: mjbl-api-gateway
+spec:
+  ports:
+  - port: 2181
+    targetPort: 2181
+  clusterIP: None
+  selector:
+    app: mjbl-external-zookeeper
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: mjbl-api-gateway
   name: mjbl-external-kafka
+  namespace: mjbl-api-gateway
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: mjbl-external-kafka
@@ -19,27 +76,19 @@ spec:
         ports:
         - containerPort: 9092
         env:
-        - name: KAFKA_KRAFT_MODE
-          value: "true"
-        - name: KAFKA_LISTENER_NAME
-          value: "PLAINTEXT"
         - name: KAFKA_LISTENERS
           value: "PLAINTEXT://0.0.0.0:9092"
         - name: KAFKA_ADVERTISED_LISTENERS
-          value: "PLAINTEXT://localhost:9092"
+          value: "PLAINTEXT://mjbl-external-kafka:9092"
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: "PLAINTEXT:PLAINTEXT"
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "mjbl-external-zookeeper:2181"
         - name: KAFKA_LOG_DIRS
-          value: "/var/lib/kafka/data"
-        - name: KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE
-          value: "false"
-        - name: KAFKA_KRAFT_MODE
-          value: "true"
-        - name: KAFKA_KRAFT_MODE_BOOTSTRAP_SERVERS
-          value: "localhost:9092"
+          value: "/var/lib/mjbl-external-kafka/data"
         volumeMounts:
-        - name: kafka-storage
-          mountPath: /var/lib/kafka/data
+        - name: mjbl-external-kafka-data
+          mountPath: /var/lib/mjbl-external-kafka/data
         resources:
           requests:
             memory: "2Gi"
@@ -48,8 +97,20 @@ spec:
             memory: "4Gi"
             cpu: "2"
       volumes:
-      - name: kafka-storage
+      - name: mjbl-external-kafka-data
         emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-external-kafka-local
+spec:
+  ports:
+  - port: 9092
+    targetPort: 9092
+  selector:
+    app: mjbl-external-kafka
 ---
 apiVersion: v1
 kind: Service
@@ -57,23 +118,9 @@ metadata:
   namespace: mjbl-api-gateway
   name: mjbl-external-kafka
 spec:
+  type: LoadBalancer
   ports:
   - port: 9092
     targetPort: 9092
   selector:
     app: mjbl-external-kafka
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-api-gateway
-  name: mjbl-external-kafka-local
-spec:
-  type: ClusterIP
-  selector:
-    app: mjbl-external-kafka
-  ports:
-    - port: 9026
-      targetPort: app-port
