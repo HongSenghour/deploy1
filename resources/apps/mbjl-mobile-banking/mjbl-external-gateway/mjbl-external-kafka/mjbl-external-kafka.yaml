@@ -35,6 +35,8 @@ spec:
         env:
           - name: KAFKA_KRAFT_MODE
             value: "true"
+          - name: KAFKA_KRAFT_CLUSTER_ID 
+            value: "0"
           - name: KAFKA_LISTENER_NAME
             value: "PLAINTEXT"
           - name: KAFKA_LISTENER_PORT
@@ -43,6 +45,8 @@ spec:
             value: "PLAINTEXT:PLAINTEXT"
           - name: KAFKA_LISTENER_NAME
             value: "PLAINTEXT://localhost:9092"
+          - name: KAFKA_ZOOKEEPER_METADATA_MIGRATION_ENABLE
+            value: "true"
           - name: KAFKA_BROKER_ID
             value: "1"
           - name: KAFKA_LOG_DIRS
