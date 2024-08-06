@@ -113,4 +113,4 @@ spec:
     app: mjbl-external-kafka
   ports:
     - port: 9026
-      targetPort: 9092
+      targetPort: app-port
