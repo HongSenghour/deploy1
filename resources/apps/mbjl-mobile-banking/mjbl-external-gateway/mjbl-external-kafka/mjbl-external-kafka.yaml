@@ -26,7 +26,7 @@ spec:
         - name: KAFKA_LISTENERS
           value: "PLAINTEXT://0.0.0.0:9092"
         - name: KAFKA_ADVERTISED_LISTENERS
-          value: "PLAINTEXT://kafka:9092"
+          value: "PLAINTEXT://localhost:9092"
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: "PLAINTEXT:PLAINTEXT"
         - name: KAFKA_LOG_DIRS
@@ -36,7 +36,7 @@ spec:
         - name: KAFKA_KRAFT_MODE
           value: "true"
         - name: KAFKA_KRAFT_MODE_BOOTSTRAP_SERVERS
-          value: "kafka:9092"
+          value: "localhost:9092"
         volumeMounts:
         - name: kafka-storage
           mountPath: /var/lib/kafka/data
