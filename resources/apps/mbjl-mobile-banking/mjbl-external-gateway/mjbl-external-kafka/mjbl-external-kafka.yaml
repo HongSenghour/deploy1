@@ -1,11 +1,10 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: mjbl-api-gateway
   name: mjbl-external-kafka
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
@@ -27,15 +26,8 @@ spec:
         - containerPort: 9092
           name: app-port
         volumeMounts:
-        - name: kafka-data
+        - name: mjbl-external-kafka
           mountPath: /var/lib/kafka/data
-        - name: kafka-config
-          mountPath: /etc/kafka
-          subPath: kafka.properties
-        command:
-          - sh
-          - -c
-          - "kafka-server-start.sh /etc/kafka/kafka.properties"
         resources:
           requests:
             memory: "2Gi"
@@ -46,7 +38,7 @@ spec:
         securityContext:
             allowPrivilegeEscalation: false
       volumes:
-      - name: kafka-data
+      - name: mjbl-external-kafka
         emptyDir: {}
       affinity:
         podAntiAffinity:
