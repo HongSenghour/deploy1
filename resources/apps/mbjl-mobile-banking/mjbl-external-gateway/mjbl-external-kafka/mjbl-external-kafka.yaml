@@ -25,6 +25,7 @@ spec:
         image: 10.92.0.87:1521/uat/apache/kafka:3.8.0
         ports:
         - containerPort: 9092
+          name: app-port
         volumeMounts:
         - name: mjbl-external-kafka-data
           mountPath: /var/lib/mjbl-external-kafka/data
@@ -68,7 +69,7 @@ spec:
     - protocol: TCP
       port: 9092
       targetPort: app-port
-      nodePort: 9026
+      nodePort: 32099
 
 ---
 
