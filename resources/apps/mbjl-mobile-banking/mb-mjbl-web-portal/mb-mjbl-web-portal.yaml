@@ -111,7 +111,7 @@ spec:
                     - mb-mjbl-web-portal
                 topologyKey: "kubernetes.io/hostname"
               weight: 1
-
+---
 kind: Service
 apiVersion: v1
 metadata:
