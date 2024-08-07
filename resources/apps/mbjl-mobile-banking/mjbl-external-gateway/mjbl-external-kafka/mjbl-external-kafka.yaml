@@ -114,19 +114,3 @@ spec:
   ports:
     - port: 9026
       targetPort: app-port
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: mjbl-api-gateway
-  name: mjbl-external-kafka-lb
-spec:
-  type: LoadBalancer
-  selector:
-    app: mjbl-external-kafka
-  ports:
-  - port: 31004
-    targetPort: app-port
-    protocol: TCP
