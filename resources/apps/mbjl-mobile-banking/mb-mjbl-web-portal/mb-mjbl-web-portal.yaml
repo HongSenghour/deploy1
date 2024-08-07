@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-web-portal
-          image: harbor.sathapana.com.kh/uat/mb-mjbl-web-portal:50690
+          image: harbor.sathapana.com.kh/uat/mb-mjbl-web-portal:50844
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
