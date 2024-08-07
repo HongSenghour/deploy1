@@ -39,7 +39,7 @@ spec:
             - name: KAFKA_LISTENERS
               value: "PLAINTEXT://:9092,CONTROLLER://:9093"
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://10.93.0.24:32099"
+              value: "PLAINTEXT://localhost:9092"
             - name: KAFKA_CONTROLLER_LISTENER_NAMES
               value: "CONTROLLER"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
@@ -96,9 +96,9 @@ spec:
     app: mjbl-external-kafka
   ports:
     - protocol: TCP
-      port: 9092
+      port: 9026
       targetPort: app-port
-      nodePort: 32099
+      nodePort: 32027
 
 ---
 
@@ -127,6 +127,6 @@ spec:
   selector:
     app: mjbl-external-kafka
   ports:
-  - port: 32099
+  - port: 32027
     targetPort: app-port
     protocol: TCP
