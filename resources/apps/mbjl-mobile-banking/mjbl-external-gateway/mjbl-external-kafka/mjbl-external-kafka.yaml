@@ -98,7 +98,7 @@ spec:
     - protocol: TCP
       port: 9026
       targetPort: app-port
-      nodePort: 32027
+      nodePort: 31004
 
 ---
 
@@ -127,6 +127,6 @@ spec:
   selector:
     app: mjbl-external-kafka
   ports:
-  - port: 32027
+  - port: 31004
     targetPort: app-port
     protocol: TCP
