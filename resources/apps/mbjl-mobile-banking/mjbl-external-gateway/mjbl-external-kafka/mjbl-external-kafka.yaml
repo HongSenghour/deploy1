@@ -128,10 +128,5 @@ spec:
     app: mjbl-external-kafka
   ports:
   - port: 32099
-    targetPort: 9092
+    targetPort: app-port
     protocol: TCP
-    name: plaintext
-  - port: 32098
-    targetPort: 9093
-    protocol: TCP
-    name: controller
