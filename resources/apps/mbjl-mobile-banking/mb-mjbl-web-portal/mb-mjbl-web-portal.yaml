@@ -94,8 +94,25 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_COMMON_VALIDATION_BASE_URL
+            - name: "MS_MJBL_IN_HOUSE_API_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_MJBL_IN_HOUSE_API_BASE_URL
+            - name: "SPORTAL_WEB_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: SPORTAL_WEB_BASE_URL
             # Configuration Local Cluster END
 
+            # Configuration Service START
+            - name: "MS_MJBL_IN_HOUSE_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-service-credentials
+                  key: MS_MJBL_IN_HOUSE_API_KEY
+            # Configuration Service END
           securityContext:
             allowPrivilegeEscalation: false
           
