@@ -77,11 +77,11 @@ kind: Service
 apiVersion: v1
 metadata:
   namespace: mjbl-api-gateway
-  name: mjbl-external-kafka-local
+  name: mjbl-external-centralized-logs-consumer-local
 spec:
   type: ClusterIP
   selector:
-    app: mjbl-external-kafka
+    app: mjbl-external-centralized-logs-consumer
   ports:
     - port: 9025
       targetPort: app-port
