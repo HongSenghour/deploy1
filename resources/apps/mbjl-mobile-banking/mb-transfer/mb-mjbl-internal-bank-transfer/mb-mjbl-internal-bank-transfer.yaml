@@ -94,6 +94,11 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_COMMON_VALIDATION_BASE_URL
+            - name: "MS_CENTRALIZED_LOG_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_CENTRALIZED_LOG_BASE_URL
             # Configuration Local Cluster END
 
             # Configuration Service START
