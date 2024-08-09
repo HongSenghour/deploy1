@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-admin-web-portal
-          image: harbor.sathapana.com.kh/uat/mb-mjbl-admin-web-portal:50170
+          image: harbor.sathapana.com.kh/uat/mb-mjbl-admin-web-portal:50394
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -127,28 +127,11 @@ kind: Service
 apiVersion: v1
 metadata:
   namespace: mjbl-mobile-banking
-  name: mb-mjbl-admin-web-portal
-spec:
-  type: NodePort
-  selector:
-    app: mb-mjbl-admin-web-portal
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: app-port
-      nodePort: 32025
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-mobile-banking
   name: mb-mjbl-admin-web-portal-local
 spec:
   type: ClusterIP
   selector:
     app: mb-mjbl-admin-web-portal
   ports:
-    - port: 9025
+    - port: 9028
       targetPort: app-port
