@@ -25,7 +25,6 @@ spec:
           ports:
             - containerPort: 9092
               name: app-port
-            - containerPort: 9093
           volumeMounts:
             - name: mjbl-external-kafka-data
               mountPath: /var/lib/mjbl-external-kafka/data
@@ -37,9 +36,9 @@ spec:
             - name: KAFKA_PROCESS_ROLES
               value: "broker,controller"
             - name: KAFKA_LISTENERS
-              value: "PLAINTEXT://:9092,CONTROLLER://:9093,PLAINTEXT_HOST://:9026"
+              value: "PLAINTEXT://:31004,CONTROLLER://:9093,PLAINTEXT_HOST://:9092"
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://localhost:9092,PLAINTEXT_HOST://mjbl-external-kafka-local.mjbl-api-gateway.svc.cluster.local:9026"
+              value: "PLAINTEXT://localhost:31004,PLAINTEXT_HOST://mjbl-external-kafka-local.mjbl-api-gateway.svc.cluster.local:9092"
             - name: KAFKA_CONTROLLER_LISTENER_NAMES
               value: "CONTROLLER"
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
@@ -96,7 +95,7 @@ spec:
     app: mjbl-external-kafka
   ports:
     - protocol: TCP
-      port: 9026
+      port: 9092
       targetPort: app-port
       nodePort: 31004
 
@@ -112,5 +111,5 @@ spec:
   selector:
     app: mjbl-external-kafka
   ports:
-    - port: 9026
+    - port: 9092
       targetPort: app-port
