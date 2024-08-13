@@ -19,6 +19,7 @@ spec:
       labels:
         app: mjbl-external-api-gateway
     spec:
+      nodeName: uat-api-gw-k8s-w2
       containers:
         - name: mjbl-external-api-gateway
           image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:51079
