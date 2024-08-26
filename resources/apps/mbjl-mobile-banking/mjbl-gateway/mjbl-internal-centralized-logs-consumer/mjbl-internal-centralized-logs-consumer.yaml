@@ -79,6 +79,7 @@ spec:
                 secretKeyRef:
                   name: mjbl-api-gateway-local-cluster-credentials
                   key: KAFKA_CONSUMER_MAX_POOL_RECORDS 
+
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -105,19 +106,3 @@ spec:
   ports:
     - port: 9025
       targetPort: app-port
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-api-gateway
-  name: mjbl-internal-centralized-logs-consumer
-spec:
-  type: NodePort
-  selector:
-    app: mjbl-internal-centralized-logs-consumer
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: app-port
-      nodePort: 31003
