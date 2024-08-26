@@ -103,7 +103,27 @@ spec:
                 secretKeyRef:
                   name: mjbl-api-gateway-local-cluster-credentials
                   key: KAFKA_HOST
-            # Local Cluster Config END
+            - name: "KAFKA_TOPIC_ODD_DAY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_TOPIC_ODD_DAY
+            - name: "KAFKA_TOPIC_EVEN_DAY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_TOPIC_EVEN_DAY
+            - name: "KAFKA_GROUP_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_GROUP_ID
+            - name: "KAFKA_CONSUMER_MAX_POOL_RECORDS"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_CONSUMER_MAX_POOL_RECORDS      
+            # Local Cluster Config END 
 
             # Service Configuration START
             - name: "GATEWAY_API_KEY"

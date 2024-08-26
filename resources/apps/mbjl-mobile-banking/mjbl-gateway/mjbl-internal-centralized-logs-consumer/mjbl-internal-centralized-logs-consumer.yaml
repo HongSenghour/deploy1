@@ -54,11 +54,31 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
           env:
-            - name: "KAKFA_HOST"
+            - name: "KAFKA_HOST"
               valueFrom:
                 secretKeyRef:
-                  name: mjbl-api-gateway-service-credentials
-                  key: KAKFA_HOST
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_HOST
+            - name: "KAFKA_TOPIC_ODD_DAY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_TOPIC_ODD_DAY
+            - name: "KAFKA_TOPIC_EVEN_DAY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_TOPIC_EVEN_DAY
+            - name: "KAFKA_GROUP_ID"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_GROUP_ID
+            - name: "KAFKA_CONSUMER_MAX_POOL_RECORDS"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-local-cluster-credentials
+                  key: KAFKA_CONSUMER_MAX_POOL_RECORDS 
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
