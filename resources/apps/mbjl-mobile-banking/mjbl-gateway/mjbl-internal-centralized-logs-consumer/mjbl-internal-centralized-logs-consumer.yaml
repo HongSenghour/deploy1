@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-external-centralized-logs-consumer
+spec:
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: mjbl-external-centralized-logs-consumer
+  template:
+    metadata:
+      labels:
+        app: mjbl-external-centralized-logs-consumer
+    spec:
+      containers:
+        - name: mjbl-external-centralized-logs-consumer
+          image: 10.92.0.87:1521/uat/mjbl-external-centralized-logs-consumer:51137
+          imagePullPolicy: IfNotPresent
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+
+          ports:
+            - containerPort: 8080
+              name: app-port
+          resources:
+            requests:
+              memory: "256Mi"
+            limits:
+              memory: "512Mi"
+          securityContext:
+            allowPrivilegeEscalation: false
+          env:
+            - name: "KAKFA_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-service-credentials
+                  key: KAKFA_HOST
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - mjbl-external-centralized-logs-consumer
+                topologyKey: "kubernetes.io/hostname"
+              weight: 1
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-external-centralized-logs-consumer-local
+spec:
+  type: ClusterIP
+  selector:
+    app: mjbl-external-centralized-logs-consumer
+  ports:
+    - port: 9025
+      targetPort: app-port
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-external-centralized-logs-consumer
+spec:
+  type: NodePort
+  selector:
+    app: mjbl-external-centralized-logs-consumer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: app-port
+      nodePort: 31003
