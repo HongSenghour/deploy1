@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: mjbl-mobile-banking
-  name: mb-mjbl-web-portal
+  name: mb-mjbl-beneficiary
 spec:
   replicas: 1
   minReadySeconds: 30
@@ -13,16 +13,16 @@ spec:
       maxSurge: 25%
   selector:
     matchLabels:
-      app: mb-mjbl-web-portal
+      app: mb-mjbl-beneficiary
   template:
     metadata:
       labels:
-        app: mb-mjbl-web-portal
+        app: mb-mjbl-beneficiary
     spec:
       #nodeName: c1ukubwkr03
       containers:
-        - name: mb-mjbl-web-portal
-          image: 10.92.0.87:1521/uat/mb-mjbl-web-portal:51727
+        - name: mb-mjbl-beneficiary
+          image: 10.92.0.87:1521/uat/mb-mjbl-beneficiary:51242
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -89,30 +89,36 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_CENTRALIZED_LOG_BASE_URL
-            - name: "MS_COMMON_VALIDATION_BASE_URL"
+            - name: "MS_HASH_VALIDATION_BASE_URL"
               valueFrom:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
-                  key: MS_COMMON_VALIDATION_BASE_URL
+                  key: MS_HASH_VALIDATION_BASE_URL
+            - name: "MS_OTP_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_OTP_BASE_URL
             - name: "MS_MJBL_IN_HOUSE_API_BASE_URL"
               valueFrom:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_MJBL_IN_HOUSE_API_BASE_URL
-            - name: "SPORTAL_WEB_BASE_URL"
-              valueFrom:
-                secretKeyRef:
-                  name: mjbl-mb-local-cluster-credentials
-                  key: SPORTAL_WEB_BASE_URL
             # Configuration Local Cluster END
 
             # Configuration Service START
+            - name: "MB_SECURITY_ENCRYPTION_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-service-credentials
+                  key: MB_SECURITY_ENCRYPTION_KEY
             - name: "MS_MJBL_IN_HOUSE_API_KEY"
               valueFrom:
                 secretKeyRef:
                   name: mjbl-mb-service-credentials
                   key: MS_MJBL_IN_HOUSE_API_KEY
             # Configuration Service END
+
           securityContext:
             allowPrivilegeEscalation: false
           
@@ -125,19 +131,39 @@ spec:
                   - key: app
                     operator: In
                     values:
-                    - mb-mjbl-web-portal
+                    - mb-mjbl-beneficiary
                 topologyKey: "kubernetes.io/hostname"
               weight: 1
+              
+
 ---
+
 kind: Service
 apiVersion: v1
 metadata:
   namespace: mjbl-mobile-banking
-  name: mb-mjbl-web-portal-local
+  name: mb-mjbl-beneficiary-local
 spec:
   type: ClusterIP
   selector:
-    app: mb-mjbl-web-portal
+    app: mb-mjbl-beneficiary
   ports:
-    - port: 9004
+    - port: 9012
       targetPort: app-port
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-mobile-banking
+  name: mb-mjbl-beneficiary
+spec:
+  type: NodePort
+  selector:
+    app: mb-mjbl-beneficiary
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: app-port
+      nodePort: 32012
