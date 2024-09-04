@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-limitation-validation
-          image: 10.92.0.87:1521/uat/mb-mjbl-limitation-validation:51271
+          image: 10.92.0.87:1521/uat/mb-mjbl-limitation-validation:52003
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
