@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-common-validation
-          image: 10.92.0.87:1521/uat/mb-mjbl-common-validation:52217
+          image: 10.92.0.87:1521/uat/mb-mjbl-common-validation:51367
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
