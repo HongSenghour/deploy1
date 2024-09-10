@@ -50,7 +50,7 @@ spec:
             requests:
               memory: "256Mi"
             limits:
-              memory: "512Mi"
+              memory: "2Gi"
           env:
             - name: "DB_MB_HOST"
               valueFrom:
