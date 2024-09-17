@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-account
-          image: 10.92.0.87:1521/uat/mb-mjbl-account:52459
+          image: 10.92.0.87:1521/uat/mb-mjbl-account:52502
           imagePullPolicy: IfNotPresent
           # livenessProbe:
           #   httpGet:
@@ -81,6 +81,32 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-db-credentials
                   key: DB_MB_PASSWORD
+
+            - name: "DB_CORE_BANKING_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_HOST
+            - name: "DB_CORE_BANKING_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_PORT
+            - name: "DB_CORE_BANKING_DATABASE_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_DATABASE_NAME
+            - name: "DB_CORE_BANKING_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_USERNAME
+            - name: "DB_CORE_BANKING_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_PASSWORD
             # Database Configuration END
 
             # Configuration Local Cluster START
