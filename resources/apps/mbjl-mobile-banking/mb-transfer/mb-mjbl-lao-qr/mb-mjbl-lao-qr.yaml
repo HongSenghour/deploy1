@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-lao-qr
-          image: 10.92.0.87:1521/uat/mb-mjbl-lao-qr:52692
+          image: 10.92.0.87:1521/uat/mb-mjbl-lao-qr:52694
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
