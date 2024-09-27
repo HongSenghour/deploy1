@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-identification
-          image: 10.92.0.87:1521/uat/mb-mjbl-identification:52147
+          image: 10.92.0.87:1521/uat/mb-mjbl-identification:52925
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -118,6 +118,15 @@ spec:
                   name: mjbl-mb-service-credentials
                   key: MS_MJBL_IN_HOUSE_API_KEY
             # Configuration Service END
+
+            # Configuration Static Variable START
+            - name: LOGGING_LEVEL
+              value: "DEBUG"
+            - name: IS_SENDING_REAL_OTP
+              value: "false"
+            - name: DUMMY_NUMBER_SENDING_OTP
+              value: "0"
+            # Configuration Static Variable END
 
           securityContext:
             allowPrivilegeEscalation: false
