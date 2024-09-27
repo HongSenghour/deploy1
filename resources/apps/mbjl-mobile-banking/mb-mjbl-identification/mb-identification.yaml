@@ -121,7 +121,7 @@ spec:
 
             # Configuration Static Variable START
             - name: LOGGING_LEVEL
-              value: "DEBUG"
+              value: "INFO"
             - name: IS_SENDING_REAL_OTP
               value: "false"
             - name: DUMMY_NUMBER_SENDING_OTP
