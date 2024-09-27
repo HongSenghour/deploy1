@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-mobile-topup
-          image: 10.92.0.87:1521/uat/mb-mjbl-mobile-topup:52885
+          image: 10.92.0.87:1521/uat/mb-mjbl-mobile-topup:52889
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
