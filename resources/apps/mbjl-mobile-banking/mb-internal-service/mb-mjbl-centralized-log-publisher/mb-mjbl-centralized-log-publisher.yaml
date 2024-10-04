@@ -72,6 +72,10 @@ spec:
               value: "Even-Day-Distributed-Message"
             - name: "KAFKA_CONSUMER_MAX_POOL_RECORDS"
               value: "15"
+            - name: "USER_TIMEZONE"
+              value: "QXNpYS9CYW5na29r"
+            - name: "HTTPS_PROTOCOLS"
+              value: "VExTdjEuMyxUTFN2MS4y"
             # Configuration Service END
 
           securityContext:
