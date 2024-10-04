@@ -160,19 +160,19 @@ spec:
     - port: 9005
       targetPort: app-port
 
----
+# ---
 
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: mjbl-mobile-banking
-  name: mb-mjbl-identification
-spec:
-  type: NodePort
-  selector:
-    app: mb-mjbl-identification
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: app-port
-      nodePort: 31004
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   namespace: mjbl-mobile-banking
+#   name: mb-mjbl-identification
+# spec:
+#   type: NodePort
+#   selector:
+#     app: mb-mjbl-identification
+#   ports:
+#     - protocol: TCP
+#       port: 8080
+#       targetPort: app-port
+#       nodePort: 31004
