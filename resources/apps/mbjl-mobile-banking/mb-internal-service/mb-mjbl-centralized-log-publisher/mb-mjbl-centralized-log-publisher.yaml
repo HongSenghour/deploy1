@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mjbl-mobile-banking
+  name: mb-mjbl-centralized-log-publisher
+spec:
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: mb-mjbl-centralized-log-publisher
+  template:
+    metadata:
+      labels:
+        app: mb-mjbl-centralized-log-publisher
+    spec:
+      #nodeName: c1ukubwkr03
+      containers:
+        - name: mb-mjbl-centralized-log-publisher
+          image: 10.92.0.87:1521/uat/mb-mjbl-centralized-log-publisher:52958
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+
+          ports:
+            - containerPort: 8080
+              name: app-port
+          resources:
+            requests:
+              memory: "256Mi"
+              #cpu: "1000m"
+            limits:
+              memory: "512Mi"
+              #cpu: "2000m"
+
+          env:
+            # Configuration Local Cluster START
+            - name: "KAFKA_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: KAFKA_HOST
+            # Configuration Local Cluster END
+
+            # Configuration Service START
+            - name: "KAFKA_GROUP_ID"
+              value: "centralization_logs"
+            - name: "KAFKA_TOPIC_ODD_DAY"
+              value: "Odd-Day-Distributed-Message"
+            - name: "KAFKA_TOPIC_EVEN_DAY"
+              value: "Even-Day-Distributed-Message"
+            - name: "KAFKA_CONSUMER_MAX_POOL_RECORDS"
+              value: "15"
+            # Configuration Service END
+
+          securityContext:
+            allowPrivilegeEscalation: false
+          
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - mb-mjbl-centralized-log-publisher
+                topologyKey: "kubernetes.io/hostname"
+              weight: 1
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-mobile-banking
+  name: mb-mjbl-centralized-log-publisher-local
+spec:
+  type: ClusterIP
+  selector:
+    app: mb-mjbl-centralized-log-publisher
+  ports:
+    - port: 9023
+      targetPort: app-port
