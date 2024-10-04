@@ -73,9 +73,9 @@ spec:
             - name: "KAFKA_CONSUMER_MAX_POOL_RECORDS"
               value: "15"
             - name: "USER_TIMEZONE"
-              value: "QXNpYS9CYW5na29r"
+              value: "Asia/Bangkok"
             - name: "HTTPS_PROTOCOLS"
-              value: "VExTdjEuMyxUTFN2MS4y"
+              value: "TLSv1.3,TLSv1.2"
             # Configuration Service END
 
           securityContext:
