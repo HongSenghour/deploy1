@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-exchange-rate
-          image: 10.92.0.87:1521/uat/mb-mjbl-exchange-rate:51486
+          image: 10.92.0.87:1521/uat/mb-mjbl-exchange-rate:53133
           imagePullPolicy: IfNotPresent
           # livenessProbe:
           #   httpGet:
