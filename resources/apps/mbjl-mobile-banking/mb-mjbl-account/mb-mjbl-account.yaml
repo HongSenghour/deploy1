@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-account
-          image: 10.92.0.87:1521/uat/mb-mjbl-account:53020
+          image: 10.92.0.87:1521/uat/mb-mjbl-account:53095
           imagePullPolicy: IfNotPresent
           # livenessProbe:
           #   httpGet:
