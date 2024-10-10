@@ -101,7 +101,10 @@ spec:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_MJBL_IN_HOUSE_CBS_BASE_URL
             # Configuration Local Cluster END
-
+            # Configuration Static Variable START
+            - name: LOGGING_LEVEL
+              value: "DEBUG"
+            # Configuration Static Variable END
           securityContext:
             allowPrivilegeEscalation: false
           
