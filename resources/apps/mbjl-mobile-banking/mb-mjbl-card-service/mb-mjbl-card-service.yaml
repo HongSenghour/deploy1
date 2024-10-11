@@ -114,7 +114,18 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-service-credentials
                   key: MS_MJBL_IN_HOUSE_API_KEY
+
+            - name: "MB_SECURITY_ENCRYPTION_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-service-credentials
+                  key: MB_SECURITY_ENCRYPTION_KEY
             # Configuration Service END
+
+            # Configuration Static Variable START
+            - name: LOGGING_LEVEL
+              value: "DEBUG"
+            # Configuration Static Variable END
 
           securityContext:
             allowPrivilegeEscalation: false
