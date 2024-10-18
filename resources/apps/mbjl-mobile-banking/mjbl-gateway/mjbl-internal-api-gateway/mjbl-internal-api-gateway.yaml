@@ -4,7 +4,7 @@ metadata:
   namespace: mjbl-api-gateway
   name: mjbl-internal-api-gateway
 spec:
-  replicas: 1
+  replicas: 2
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
@@ -48,9 +48,9 @@ spec:
               name: app-port
           resources:
             requests:
-              memory: "256Mi"
+              memory: "1Gi"
             limits:
-              memory: "2Gi"
+              memory: "3Gi"
           env:
             - name: "DB_MB_HOST"
               valueFrom:
