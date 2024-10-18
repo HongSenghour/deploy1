@@ -78,8 +78,9 @@ spec:
             # Configuration Static Variable START
             - name: LOGGING_LEVEL
               value: "DEBUG"
+            - name: "USER_TIMEZONE"
+              value: "Asia/Bangkok"
             # Configuration Static Variable END
-
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

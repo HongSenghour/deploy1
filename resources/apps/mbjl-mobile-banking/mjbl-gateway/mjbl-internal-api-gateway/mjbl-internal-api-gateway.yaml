@@ -148,6 +148,11 @@ spec:
                   key: REDIS_PASSWORD
 
             # Service Configuration END
+            
+            # Configuration Static Variable START
+            - name: "USER_TIMEZONE"
+              value: "Asia/Bangkok"
+            # Configuration Static Variable END
           securityContext:
             allowPrivilegeEscalation: false
 

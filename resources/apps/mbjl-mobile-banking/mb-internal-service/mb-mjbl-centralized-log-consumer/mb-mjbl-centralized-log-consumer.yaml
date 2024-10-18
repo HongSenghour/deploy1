@@ -91,7 +91,7 @@ spec:
                   key: KAFKA_HOST
             # Configuration Local Cluster END
 
-            # Configuration Service START
+            # Configuration Static Variable START
             - name: "KAFKA_GROUP_ID"
               value: "centralization_logs"
             - name: "KAFKA_TOPIC_ODD_DAY"
@@ -100,7 +100,9 @@ spec:
               value: "Even-Day-Distributed-Message"
             - name: "KAFKA_CONSUMER_MAX_POOL_RECORDS"
               value: "15"
-            # Configuration Service END
+            - name: "USER_TIMEZONE"
+              value: "Asia/Bangkok"
+            # Configuration Static Variable END
 
           securityContext:
             allowPrivilegeEscalation: false
