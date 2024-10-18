@@ -152,6 +152,8 @@ spec:
             # Configuration Static Variable START
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
+            - name: "LOGGING_LEVEL"
+              name: "DEBUG"
             # Configuration Static Variable END
           securityContext:
             allowPrivilegeEscalation: false
