@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-internal-bank-transfer
-          image: 10.92.0.87:1521/uat/mb-mjbl-internal-bank-transfer:52429
+          image: 10.92.0.87:1521/uat/mb-mjbl-internal-bank-transfer:53440
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
