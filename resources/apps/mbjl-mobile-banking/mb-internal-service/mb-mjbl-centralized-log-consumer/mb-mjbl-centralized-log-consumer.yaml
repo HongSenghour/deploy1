@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-centralized-log-consumer
-          image: 10.92.0.87:1521/uat/mb-mjbl-centralized-log-consumer:52975
+          image: 10.92.0.87:1521/uat/mb-mjbl-centralized-log-consumer:53431
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
