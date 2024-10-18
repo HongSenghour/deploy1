@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: mjbl-internal-centralized-logs-consumer
-          image: 10.92.0.87:1521/uat/mjbl-internal-centralized-log-consumer:52215
+          image: 10.92.0.87:1521/uat/mjbl-internal-centralized-log-consumer:53431
           imagePullPolicy: IfNotPresent
 
           livenessProbe:
