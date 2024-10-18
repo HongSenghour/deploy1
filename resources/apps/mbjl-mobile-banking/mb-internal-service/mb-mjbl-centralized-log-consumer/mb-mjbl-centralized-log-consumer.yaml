@@ -102,6 +102,8 @@ spec:
               value: "15"
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
+            - name: "LOGGING_LEVEL"
+              name: "DEBUG"
             # Configuration Static Variable END
 
           securityContext:
