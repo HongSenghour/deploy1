@@ -115,7 +115,7 @@ spec:
             # Configuration Service END
 
             # Configuration Static Value START
-            - name: "LOGGIN_LEVEL"
+            - name: "LOGGING_LEVEL"
               value: "INFO"
             # Configuration Static Value END
 
