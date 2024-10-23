@@ -123,9 +123,9 @@ spec:
             - name: LOGGING_LEVEL
               value: "DEBUG"
             - name: IS_SENDING_REAL_OTP
-              value: "false"
+              value: "true"
             - name: DUMMY_NUMBER_SENDING_OTP
-              value: "0"
+              value: "78964424"
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
             # Configuration Static Variable END
