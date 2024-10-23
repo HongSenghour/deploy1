@@ -81,6 +81,32 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-db-credentials
                   key: DB_MB_PASSWORD
+
+            - name: "DB_CORE_BANKING_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_HOST
+            - name: "DB_CORE_BANKING_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_PORT
+            - name: "DB_CORE_BANKING_DATABASE_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_DATABASE_NAME
+            - name: "DB_CORE_BANKING_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_USERNAME
+            - name: "DB_CORE_BANKING_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-db-credentials
+                  key: DB_CORE_BANKING_PASSWORD
             # Database Configuration END
 
             # Configuration Local Cluster START
