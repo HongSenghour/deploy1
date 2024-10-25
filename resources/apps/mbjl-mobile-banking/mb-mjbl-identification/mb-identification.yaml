@@ -123,7 +123,7 @@ spec:
             - name: LOGGING_LEVEL
               value: "DEBUG"
             - name: IS_SENDING_REAL_OTP
-              value: "true"
+              value: "false"
             - name: DUMMY_NUMBER_SENDING_OTP
               value: "78964424"
             - name: "USER_TIMEZONE"
