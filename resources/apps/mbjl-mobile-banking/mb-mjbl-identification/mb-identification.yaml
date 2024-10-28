@@ -125,7 +125,7 @@ spec:
             - name: IS_SENDING_REAL_OTP
               value: "false"
             - name: DUMMY_NUMBER_SENDING_OTP
-              value: "111111"
+              value: "0"
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
             # Configuration Static Variable END
