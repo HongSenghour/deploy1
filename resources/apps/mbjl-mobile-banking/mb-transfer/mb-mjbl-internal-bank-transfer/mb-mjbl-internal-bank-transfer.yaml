@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-internal-bank-transfer
-          image: 10.92.0.87:1521/uat/mb-mjbl-internal-bank-transfer:53441
+          image: 10.92.0.87:1521/uat/mb-mjbl-internal-bank-transfer:53867
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -99,6 +99,11 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_CENTRALIZED_LOG_BASE_URL
+            - name: "MS_LIMITATION_VALIDATION_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_LIMITATION_VALIDATION_BASE_URL
             # Configuration Local Cluster END
 
             # Configuration Service START
@@ -112,6 +117,8 @@ spec:
             # Configuration Static Variable START
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
+            - name: "LOGGING_LEVEL"
+              value: "DEBUG"
             # Configuration Static Variable END
           securityContext:
             allowPrivilegeEscalation: false
