@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-external-redis
+spec:
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: mjbl-external-redis
+  template:
+    metadata:
+      labels:
+        app: mjbl-external-redis
+    spec:
+      containers:
+        - name: mjbl-external-redis
+          image: 10.92.0.87:1521/uat/redis:aug-01-2024
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+              name: app-port
+          resources:
+            requests:
+              memory: "256Mi"
+              #cpu: "1000m"
+            limits:
+              memory: "512Mi"
+              #cpu: "2000m"
+          env:
+            - name: "ALLOW_EMPTY_PASSWORD"
+              value: "no"
+            - name: "REDIS_DISABLE_COMMANDS"
+              value: "FLUSHDB,FLUSHALL,CONFIG"
+            - name: "REDIS_PASSWORD"
+              value: "Spn@1234"
+          securityContext:
+            allowPrivilegeEscalation: false
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - mjbl-external-redis
+                topologyKey: "kubernetes.io/hostname"
+              weight: 1
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-external-redis-local
+spec:
+  type: ClusterIP
+  selector:
+    app: mjbl-external-redis
+  ports:
+    - port: 9027
+      targetPort: app-port
