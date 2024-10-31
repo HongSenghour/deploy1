@@ -78,6 +78,11 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_CENTRALIZED_LOG_BASE_URL
+            - name: "MS_LIMITATION_VALIDATION_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_LIMITATION_VALIDATION_BASE_URL
             # Configuration Local Cluster END
 
             # Configuration Service START
@@ -87,6 +92,11 @@ spec:
                   name: mjbl-mb-service-credentials
                   key: MS_MJBL_IN_HOUSE_API_KEY
             # Configuration Service END
+
+            # Configuration static variable START
+            - name: "LOGGING_LEVEL"
+              value: "DEBUG"
+            # Configuration static variable END
 
           securityContext:
             allowPrivilegeEscalation: false
