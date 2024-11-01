@@ -100,10 +100,17 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_MJBL_IN_HOUSE_CBS_BASE_URL
+            - name: "MS_LIMITATION_VALIDATION_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_LIMITATION_VALIDATION_BASE_URL
             # Configuration Local Cluster END
             # Configuration Static Variable START
             - name: LOGGING_LEVEL
               value: "DEBUG"
+            - name: "USER_TIMEZONE"
+              value: "Asia/Bangkok"
             # Configuration Static Variable END
           securityContext:
             allowPrivilegeEscalation: false

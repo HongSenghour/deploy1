@@ -106,6 +106,11 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_MJBL_IN_HOUSE_CBS_BASE_URL
+            - name: "MS_LIMITATION_VALIDATION_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_LIMITATION_VALIDATION_BASE_URL
             # Configuration Local Cluster END
 
             # Configuration Service START
@@ -115,6 +120,13 @@ spec:
                   name: mjbl-mb-service-credentials
                   key: MS_MJBL_IN_HOUSE_API_KEY
             # Configuration Service END
+            
+            # Configuration Static Variable START
+            - name: "USER_TIMEZONE"
+              value: "Asia/Bangkok"
+            - name: "LOGGING_LEVEL"
+              value: "DEBUG"
+            # Configuration Static Variable END
 
           securityContext:
             allowPrivilegeEscalation: false
