@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-internal-api-gateway-streaming
+spec:
+  replicas: 1
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: mjbl-internal-api-gateway-streaming
+  template:
+    metadata:
+      labels:
+        app: mjbl-internal-api-gateway-streaming
+    spec:
+      containers:
+        - name: mjbl-internal-api-gateway-streaming
+          image: 10.92.0.87:1521/uat/mjbl-internal-api-gateway-streaming:54365
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8080
+              name: app-port
+          resources:
+            requests:
+              memory: "512Mi"
+            limits:
+              memory: "1Gi"
+          env:
+            
+            # Configuration Static Variable START
+            - name: "IMAGE_BACKEND_SERVER_BASE_URL"
+              value: "http://10.92.0.84:3003"
+            - name: "USER_TIMEZONE"
+              value: "Asia/Bangkok"
+            - name: "LOGGING_LEVEL"
+              name: "DEBUG"
+            # Configuration Static Variable END
+          securityContext:
+            allowPrivilegeEscalation: false
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - mjbl-internal-api-gateway-streaming
+                topologyKey: "kubernetes.io/hostname"
+              weight: 1
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: mjbl-api-gateway
+  name: mjbl-internal-api-gateway-streaming
+spec:
+  type: NodePort
+  selector:
+    app: mjbl-internal-api-gateway-streaming
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: app-port
+      nodePort: 30001
