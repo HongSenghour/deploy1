@@ -22,7 +22,7 @@ spec:
       nodeName: uat-api-gw-k8s-w2
       containers:
         - name: mjbl-external-api-gateway
-          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:53659
+          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:54426
           imagePullPolicy: IfNotPresent
 
           # livenessProbe:
@@ -60,6 +60,11 @@ spec:
                 secretKeyRef:
                   name: mjbl-api-gateway-service-credentials
                   key: INTERNAL_API_GATEWAY_BASE_URL
+            - name: "INTERNAL_API_GATEWAY_IMAGE_BASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-api-gateway-service-credentials
+                  key: INTERNAL_API_GATEWAY_IMAGE_BASE_URL
             - name: "KAKFA_HOST"
               valueFrom:
                 secretKeyRef:
