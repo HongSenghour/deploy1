@@ -150,6 +150,8 @@ spec:
             # Service Configuration END
             
             # Configuration Static Variable START
+            - name: "IMAGE_BACKEND_SERVER_BASE_URL"
+              value: "http://10.92.0.84:3003"
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
             - name: "LOGGING_LEVEL"
