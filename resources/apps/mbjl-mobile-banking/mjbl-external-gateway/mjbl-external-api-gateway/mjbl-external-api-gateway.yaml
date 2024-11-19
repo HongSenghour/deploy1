@@ -64,7 +64,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mjbl-api-gateway-service-credentials
-                  key: INTERNAL_API_GATEWAY_IMAGE_BASE_URL
+                  key: INTERNAL_API_GATEWAY_BASE_URL
             - name: "KAKFA_HOST"
               valueFrom:
                 secretKeyRef:
