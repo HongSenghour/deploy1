@@ -22,7 +22,7 @@ spec:
       #nodeName: c1ukubwkr03
       containers:
         - name: mb-mjbl-bill-payment
-          image: 10.92.0.87:1521/uat/mb-mjbl-bill-payment:53900
+          image: 10.92.0.87:1521/uat/mb-mjbl-bill-payment:54519
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
