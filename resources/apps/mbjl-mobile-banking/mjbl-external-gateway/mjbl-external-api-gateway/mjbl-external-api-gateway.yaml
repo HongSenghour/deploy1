@@ -85,8 +85,10 @@ spec:
               value: "DEBUG"
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
+
+              # TEST DATA: /api/services/SpnbCustomerInquiry, /api/services/SpnbCustAccountInquiry
             - name: "IGNORE_VALIDATE_SESSION_TOKEN_URLS"
-              value: "/device/register, /gw/api-gateway-config/fetch, /portal/terms, /portal/start-up, /portal/device-register"
+              value: "/device/register, /gw/api-gateway-config/fetch, /portal/terms, /portal/start-up, /portal/device-register, /api/services/SpnbCustomerInquiry, /api/services/SpnbCustAccountInquiry"
             # Configuration Static Variable END
       affinity:
         podAntiAffinity:
