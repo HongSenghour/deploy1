@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: mjbl-internal-api-gateway
-          image: 10.92.0.87:1521/uat/mjbl-internal-api-gateway:55796
+          image: 10.92.0.87:1521/uat/mjbl-internal-api-gateway:55826
           imagePullPolicy: IfNotPresent
 
           livenessProbe:
