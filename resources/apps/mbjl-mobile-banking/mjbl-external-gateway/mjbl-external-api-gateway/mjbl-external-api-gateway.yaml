@@ -22,7 +22,7 @@ spec:
       nodeName: uat-api-gw-k8s-w2
       containers:
         - name: mjbl-external-api-gateway
-          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:55798
+          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:55855
           imagePullPolicy: IfNotPresent
 
           # livenessProbe:
@@ -85,6 +85,8 @@ spec:
               value: "DEBUG"
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
+            - name: "IS_ENABLE_RATE_LIMIT"
+              value: "true"
 
               # TEST DATA: /api/services/SpnbCustomerInquiry, /api/services/SpnbCustAccountInquiry
             - name: "IGNORE_VALIDATE_SESSION_TOKEN_URLS"
