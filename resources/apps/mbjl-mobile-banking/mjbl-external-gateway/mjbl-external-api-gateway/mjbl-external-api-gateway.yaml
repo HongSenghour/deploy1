@@ -86,7 +86,7 @@ spec:
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
             - name: "IS_ENABLE_RATE_LIMIT"
-              value: "true"
+              value: "false"
 
               # TEST DATA: /api/services/SpnbCustomerInquiry, /api/services/SpnbCustAccountInquiry
             - name: "IGNORE_VALIDATE_SESSION_TOKEN_URLS"
