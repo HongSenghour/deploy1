@@ -4,7 +4,7 @@ metadata:
   namespace: mjbl-api-gateway
   name: mjbl-external-api-gateway
 spec:
-  replicas: 1
+  replicas: 2
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
@@ -22,7 +22,7 @@ spec:
       nodeName: uat-api-gw-k8s-w2
       containers:
         - name: mjbl-external-api-gateway
-          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:55855
+          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:55937
           imagePullPolicy: IfNotPresent
 
           # livenessProbe:
