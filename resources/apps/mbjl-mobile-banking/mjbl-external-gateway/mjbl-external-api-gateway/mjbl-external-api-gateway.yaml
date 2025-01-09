@@ -4,7 +4,7 @@ metadata:
   namespace: mjbl-api-gateway
   name: mjbl-external-api-gateway
 spec:
-  replicas: 1
+  replicas: 2
   minReadySeconds: 30
   strategy:
     type: RollingUpdate
