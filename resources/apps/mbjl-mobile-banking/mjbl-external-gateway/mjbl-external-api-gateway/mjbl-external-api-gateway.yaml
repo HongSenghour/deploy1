@@ -51,7 +51,7 @@ spec:
             requests:
               memory: "1Gi"
             limits:
-              memory: "6Gi"
+              memory: "9Gi"
           securityContext:
             allowPrivilegeEscalation: false
           env:
