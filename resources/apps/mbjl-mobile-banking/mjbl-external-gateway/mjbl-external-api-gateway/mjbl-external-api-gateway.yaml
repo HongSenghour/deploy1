@@ -22,7 +22,7 @@ spec:
       nodeName: uat-api-gw-k8s-w2
       containers:
         - name: mjbl-external-api-gateway
-          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:56009
+          image: 10.92.0.87:1521/uat/mjbl-external-api-gateway:56051
           imagePullPolicy: IfNotPresent
 
           # livenessProbe:

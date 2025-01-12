@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: mjbl-api-gateway-configuration-service
-          image: 10.92.0.87:1521/uat/mjbl-api-gateway-configuration-service:52199
+          image: 10.92.0.87:1521/uat/mjbl-api-gateway-configuration-service:56055
           imagePullPolicy: IfNotPresent
 
           livenessProbe:
