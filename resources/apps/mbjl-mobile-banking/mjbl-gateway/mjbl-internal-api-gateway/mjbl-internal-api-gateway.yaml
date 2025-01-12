@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: mjbl-internal-api-gateway
-          image: 10.92.0.87:1521/uat/mjbl-internal-api-gateway:56057
+          image: 10.92.0.87:1521/uat/mjbl-internal-api-gateway:56063
           imagePullPolicy: IfNotPresent
 
           livenessProbe:
@@ -153,7 +153,7 @@ spec:
             - name: "USER_TIMEZONE"
               value: "Asia/Bangkok"
             - name: "LOGGING_LEVEL"
-              name: "INFO"
+              name: "DEBUG"
             # Configuration Static Variable END
           securityContext:
             allowPrivilegeEscalation: false
