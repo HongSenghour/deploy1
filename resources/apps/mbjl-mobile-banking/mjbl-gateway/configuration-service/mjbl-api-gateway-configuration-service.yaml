@@ -109,7 +109,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: app-port
-      nodePort: 32002
+      nodePort: 30004
 
 ---
 
