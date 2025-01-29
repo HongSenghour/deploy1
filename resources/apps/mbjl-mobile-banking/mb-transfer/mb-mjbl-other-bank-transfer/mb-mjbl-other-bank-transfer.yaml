@@ -73,6 +73,11 @@ spec:
                 secretKeyRef:
                   name: mjbl-mb-local-cluster-credentials
                   key: MS_CENTRALIZED_LOG_BASE_URL
+            - name: "MS_MJBL_INTERNAL_MICROSERVICE_ACCOUNT"
+              valueFrom:
+                secretKeyRef:
+                  name: mjbl-mb-local-cluster-credentials
+                  key: MS_MJBL_INTERNAL_MICROSERVICE_ACCOUNT
             # Configuration Local Cluster END
 
             # Configuration Service START
